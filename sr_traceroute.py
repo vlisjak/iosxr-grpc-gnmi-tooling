@@ -55,8 +55,8 @@ if __name__ == "__main__":
 
         try:
             result_json = json.loads(result[0].yangjson)
-            for path in result_json["Cisco-IOS-XR-mpls-traceroute-act:output"]["mpls-traceroute-response"]["paths"]["path"][0]["hops"]["hop"]:
-                print(path)
+            for hop in result_json["Cisco-IOS-XR-mpls-traceroute-act:output"]["mpls-traceroute-response"]["paths"]["path"][0]["hops"]["hop"]:
+                print(hop["hop-index"], hop["hop-origin-ip"])
         except:
             result_json = json.loads(result[0].errors)
             print(result_json)
