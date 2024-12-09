@@ -15,7 +15,6 @@ import json
 
 if __name__ == "__main__":
 
-    target = "10.52.157.183:57344"
     target = "10.255.0.2:57400"
     username = "cisco"
     password = "cisco"
@@ -45,10 +44,9 @@ if __name__ == "__main__":
         for m in stub.ActionJSON(message, metadata=metadata):
             result.append(m)
 
-        print(result)
-        # try:
-        #     result_json = json.loads(result[0].yangjson)
-        #     print(result_json)
-        # except:
-        #     result_json = json.loads(result[0].errors)
-        #     print(result_json)
+        try:
+            result_json = json.loads(result[0].yangjson)
+            print(result_json)
+        except:
+            result_json = json.loads(result[0].errors)
+            print(result_json)
