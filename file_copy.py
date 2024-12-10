@@ -19,6 +19,16 @@ if __name__ == "__main__":
     username = "cisco"
     password = "cisco"
 
+    # copy from https server to local disk
+    # grpc_payload = {
+    #     "Cisco-IOS-XR-shellutil-copy-act:copy": {
+    #         "sourcename": "//username:pwd@10.52.157.130:443/ncs5500-infra-1.0.0.1-r2421.CSCwk73569.x86_64.rpm",
+    #         "destinationname": "/sample.rpm",
+    #         "sourcefilesystem": "https:",
+    #         "destinationfilesystem": "harddisk:"
+    #     }
+    # }
+
     # copy from http server to local disk
     grpc_payload = {
         "Cisco-IOS-XR-shellutil-copy-act:copy": {
