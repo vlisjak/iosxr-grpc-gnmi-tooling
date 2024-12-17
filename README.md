@@ -54,7 +54,7 @@ gnmic path --search --file ./Cisco-IOS-XR-segment-routing-ms-cfg@2019-06-19.yang
 <snip>
 ```
 
-### Get JSON payload from YANG model
+### Get JSON payload (config) from YANG path
 https://github.com/openconfig/gnmic/blob/main/docs/cmd/generate.md
 ```
 gnmic --encoding json_ietf generate --file ./Cisco-IOS-XR-segment-routing-ms-cfg@2019-06-19.yang --path /sr/adjacency-sid/interfaces/interface/address-families/address-family --json

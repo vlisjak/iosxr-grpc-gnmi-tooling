@@ -7,6 +7,7 @@ port = 57344
 user = 'cisco'
 pwd = 'cisco123'
 
+# configure MSID
 # json_payload = '''
 # {
 #     "Cisco-IOS-XR-segment-routing-ms-cfg:sr": {
@@ -17,6 +18,7 @@ pwd = 'cisco123'
 # }
 # '''
 
+# configure link shutdown 
 # json_payload = '''
 # {
 #   "openconfig-interfaces:interfaces": {
@@ -34,53 +36,91 @@ pwd = 'cisco123'
 # }
 # '''
 
+# configure Null0 static route
+# json_payload = '''
+# {
+#   "openconfig-network-instance:network-instances": {
+#    "network-instance": [
+#     {
+#      "name": "DEFAULT",
+#      "protocols": {
+#       "protocol": [
+#        {
+#         "identifier": "openconfig-policy-types:STATIC",
+#         "name": "DEFAULT",
+#         "config": {
+#          "identifier": "openconfig-policy-types:STATIC",
+#          "name": "DEFAULT"
+#         },
+#         "static-routes": {
+#          "static": [
+#           {
+#            "prefix": "5.5.5.5/32",
+#            "config": {
+#             "prefix": "5.5.5.5/32"
+#            },
+#            "next-hops": {
+#             "next-hop": [
+#              {
+#               "index": "##DROP##",
+#               "config": {
+#                "index": "##DROP##",
+#                "next-hop": "openconfig-local-routing:DROP"
+#               }
+#              }
+#             ]
+#            }
+#           }
+#          ]
+#         }
+#        }
+#       ]
+#      }
+#     }
+#    ]
+#   }
+#  }
+# '''
+
+# apply SR-TE affinity to core link
 json_payload = '''
 {
   "openconfig-network-instance:network-instances": {
    "network-instance": [
     {
-     "name": "DEFAULT",
-     "protocols": {
-      "protocol": [
-       {
-        "identifier": "openconfig-policy-types:STATIC",
-        "name": "DEFAULT",
-        "config": {
-         "identifier": "openconfig-policy-types:STATIC",
-         "name": "DEFAULT"
-        },
-        "static-routes": {
-         "static": [
-          {
-           "prefix": "5.5.5.5/32",
-           "config": {
-            "prefix": "5.5.5.5/32"
-           },
-           "next-hops": {
-            "next-hop": [
-             {
-              "index": "##DROP##",
+      "name": "DEFAULT",
+      "mpls": {
+        "te-interface-attributes": {
+          "interface": [
+            {
+              "interface-id": "GigabitEthernet0/0/0/5",
               "config": {
-               "index": "##DROP##",
-               "next-hop": "openconfig-local-routing:DROP"
+                "interface-id": "GigabitEthernet0/0/0/5",
+                "admin-group": [
+                  "R10-R11"
+                ]
               }
-             }
-            ]
-           }
-          }
-         ]
+            }
+          ]
         }
-       }
-      ]
-     }
+      }
     }
    ]
   }
- }
+}
 '''
 
+# prefix = "openconfig://"
+# gnmi_path = [
+#   "openconfig-network-instance:network-instances/network-instance[name=DEFAULT]/protocols/protocol[identifier=STATIC][name=DEFAULT]/static-routes/static[prefix=5.5.5.5/32]"
+# ]
+
+# default if not specified: 'openconfig' 
+# # -> Error: gNMI: invalid YangGetGnmi: rpc error: code = Internal desc = prefix and path origins do not match
+
+prefix = "cisco_native://"
 gnmi_path = [
-  "openconfig-network-instance:network-instances/network-instance[name=DEFAULT]/protocols/protocol[identifier=STATIC][name=DEFAULT]/static-routes/static[prefix=5.5.5.5/32]"
+  "/Cisco-IOS-XR-clns-isis-oper:isis/instances/instance/levels/level/detailed-lsps/detailed-lsp"
 ]
 
 def config_update(update_payload):
@@ -91,9 +131,9 @@ def config_update(update_payload):
       update_request = gc.set(update=updates, encoding='json_ietf')
       pp.pprint(update_request)
 
-def config_get(path):
-  with gNMIclient(target=(ip, port), username=user, password=pwd, grpc_options=[("grpc.enable_http_proxy", 0),], insecure=True, debug=True) as gc:
-      update_request = gc.get(path=path, encoding='json_ietf')
+def get(path):
+  with gNMIclient(target=(ip, port), username=user, password=pwd, grpc_options=[("grpc.enable_http_proxy", 0),], insecure=True, debug=False) as gc:
+      update_request = gc.get(prefix = prefix, path=path, encoding='json_ietf', datatype='all')
       pp.pprint(update_request)
 
 def config_delete(path):
@@ -103,5 +143,5 @@ def config_delete(path):
 
 if __name__ == '__main__':
   # config_update(update_payload=json_payload)
-  config_get(path=gnmi_path)
+  get(path=gnmi_path)
   # config_delete(path=gnmi_path)
