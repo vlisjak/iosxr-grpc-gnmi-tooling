@@ -82,7 +82,7 @@ pwd = 'cisco123'
 #  }
 # '''
 
-# apply SR-TE affinity to core link
+# apply SR-TE affinity to core link -> this is wrong because it conifgures mpls rsvp-te affinity!
 json_payload = '''
 {
   "openconfig-network-instance:network-instances": {
@@ -109,6 +109,29 @@ json_payload = '''
   }
 }
 '''
+# apply SR-TE affinity to core link
+json_payload = '''
+{
+  "Cisco-IOS-XR-segment-routing-ms-cfg:sr": {
+    "Cisco-IOS-XR-infra-xtc-agent-cfg:traffic-engineering": {
+      "srte-interfaces": {
+        "srte-interface": [
+          {
+            "srte-interface-name": "GigabitEthernet0/0/0/5",
+            "interface-affinities": {
+              "interface-affinity": [
+                {
+                  "affinity-name": "R10-R11"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+'''
 
 # prefix = "openconfig://"
 # gnmi_path = [
@@ -120,15 +143,23 @@ json_payload = '''
 
 prefix = "cisco_native://"
 gnmi_path = [
-  "/Cisco-IOS-XR-clns-isis-oper:isis/instances/instance/levels/level/detailed-lsps/detailed-lsp"
+  # "/Cisco-IOS-XR-clns-isis-oper:isis/instances/instance/levels/level/detailed-lsps"
+  "/Cisco-IOS-XR-clns-isis-oper:isis/instances/instance[instance-name=1]/levels/level[level=level2]/detailed-lsps/detailed-lsp[lsp-id=0100.4900.2000.00-00]"
 ]
 
+'''
+/Cisco-IOS-XR-segment-routing-ms-cfg:sr/Cisco-IOS-XR-infra-xtc-agent-cfg:traffic-engineering/srte-interfaces/srte-interface/interface-affinities/interface-affinity
+'''
+
+# gnmi_path = [
+#   "/Cisco-IOS-XR-segment-routing-ms-cfg:sr/Cisco-IOS-XR-infra-xtc-agent-cfg:traffic-engineering/srte-interfaces/srte-interface[srte-interface-name=GigabitEthernet0/0/0/5]"
+# ]
 def config_update(update_payload):
   updates = []
   for key,val in json.loads(update_payload).items():
       updates.append((key,val))
   with gNMIclient(target=(ip, port), username=user, password=pwd, grpc_options=[("grpc.enable_http_proxy", 0),], insecure=True, debug=False) as gc:
-      update_request = gc.set(update=updates, encoding='json_ietf')
+      update_request = gc.set(prefix=prefix, update=updates, encoding='json_ietf')
       pp.pprint(update_request)
 
 def get(path):
