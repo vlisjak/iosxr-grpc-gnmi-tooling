@@ -127,18 +127,18 @@
 # '''
 
 # apply "loopback external" under interface
-json_payload = '''
-{
-  "Cisco-IOS-XR-um-interface-cfg:interfaces": {
-    "interface": [
-      {
-        "interface-name": "HundredGigE0/0/0/24",
-        "Cisco-IOS-XR-um-if-ethernet-cfg:loopback": "internal"
-      }
-    ]
-  }
-}
-'''
+# json_payload = '''
+# {
+#   "Cisco-IOS-XR-um-interface-cfg:interfaces": {
+#     "interface": [
+#       {
+#         "interface-name": "HundredGigE0/0/0/24",
+#         "Cisco-IOS-XR-um-if-ethernet-cfg:loopback": "internal"
+#       }
+#     ]
+#   }
+# }
+# '''
 
 # apply "loopback" under interface
 # TERMINAL -> loopback internal
@@ -181,14 +181,15 @@ json_payload = '''
 # ]
 
 # prefix = "openconfig://"
-prefix = "cisco_native://"
-gnmi_path = [
+# prefix = "cisco_native://"
+# gnmi_path = [
   # "/openconfig-interfaces:interfaces/interface[name=HundredGigE0/0/0/24]/state/loopback-mode"
   # "/Cisco-IOS-XR-ifmgr-oper:interface-properties/data-nodes/data-node/locationviews/locationview/interfaces/interface[interface-name=HundredGigE0/0/0/7]"
   # "/Cisco-IOS-XR-ifmgr-oper:interface-properties"
   # "/openconfig-interfaces:interfaces/interface[name=HundredGigE0/0/0/24]"
-  "/Cisco-IOS-XR-pfi-im-cmd-oper:interfaces/interface-xr/interface[interface-name=HundredGigE0/0/0/24]/loopback-configuration"
-]
+  # "/openconfig-interfaces:interfaces/interface[name=HundredGigE0/0/0/24]/subinterfaces/subinterface[index=0]/openconfig-if-ip:ipv4/addresses/address"
+  # "/Cisco-IOS-XR-pfi-im-cmd-oper:interfaces/interface-xr/interface[interface-name=HundredGigE0/0/0/24]/loopback-configuration"
+# ]
 
 # prefix = "cisco_native://"
 # gnmi_path = [
@@ -204,3 +205,18 @@ gnmi_path = [
 #   # Then use the specific path to fetch affinity (admin-group)
 #   "/openconfig-network-instance:network-instances/network-instance[name=DEFAULT]/protocols/protocol[identifier=ISIS][name=1]/isis/levels/level[level-number=2]/link-state-database/lsp[lsp-id=0100.4900.2000.00-00]/tlvs/tlv[type=EXTENDED_IS_REACHABILITY]/extended-is-reachability/neighbors/neighbor[system-id=0100.4900.2010]/instances/instance[id=8740929536]/subtlvs/subtlv/admin-group"
 # ]
+
+# Get InQ/OutQ from "show bgp all all sum"
+# prefix = "openconfig://"
+# gnmi_path = [
+#   # "/openconfig-network-instance:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/queues"
+#   # "/openconfig-network-instance:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/queues/input"
+#   # "/openconfig-network-instance:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/queues/output"
+#   "/openconfig-network-instance:network-instances/network-instance[name=DEFAULT]/protocols/protocol[identifier=BGP][name=default]/bgp/neighbors/neighbor[neighbor-address=10.0.0.77]/state/queues/output"
+# ]
+
+prefix = "cli://"
+gnmi_path = [
+  "show version",
+  "show interface brief"
+]

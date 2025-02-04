@@ -3,3 +3,4 @@ __pycache__/
 *.cer
 CA.cer
 *_private*
+log/execution.log
