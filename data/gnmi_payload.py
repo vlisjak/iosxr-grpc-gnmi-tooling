@@ -217,6 +217,10 @@
 
 prefix = "cli://"
 gnmi_path = [
-  "show version",
-  "show interface brief"
+  # "show version"
+  # "show bgp sum"
+  # "show bgp ipv4 flowspec Dest:20.20.1.0/24,DPort:=443/72"
+  "show bgp ipv4 flowspec dest-prefix 20.20.1.0/24"
 ]
+
+# gnmic get --path 'cli:/show bgp ipv4 flowspec dest-prefix 20.20.1.0/24' --skip-verify --username cisco --password cisco --port 57344 -a 10.52.158.238  -e ascii --timeout 180s

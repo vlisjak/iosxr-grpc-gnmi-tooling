@@ -34,13 +34,13 @@ def config_update(update_payload, gnmi_target):
 
 def get(path, gnmi_target):
   with gNMIclient(**gnmi_target) as gc:
-      result = gc.get(prefix = prefix, path=path, encoding='json_ietf', datatype='all')
+      result = gc.get(prefix=prefix, path=path, encoding='json_ietf', datatype='all')
       pp.pprint(result)
 
 def get_cli(path, gnmi_target):
   """Execute "show" commands with gnmi, such as "show version", "show running"..."""
   with gNMIclient(**gnmi_target) as gc:
-      result = gc.get(prefix = prefix, path=path, encoding='ascii', datatype='all')
+      result = gc.get(prefix=prefix, path=path, encoding='ascii', datatype='all')
       pp.pprint(result)
 
 def config_delete(path, gnmi_target):
