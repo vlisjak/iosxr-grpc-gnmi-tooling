@@ -27,3 +27,13 @@
 #   "insecure": True,
 #   "debug": False
 # }
+
+# RON lab pe1
+# gnmi_target = {
+#   "target": ('192.168.101.149', 57400),
+#   "username": 'cisco',
+#   "password": 'cisco123',
+#   "grpc_options": [('grpc.enable_http_proxy', 0),],
+#   "insecure": True,
+#   "debug": False
+# }

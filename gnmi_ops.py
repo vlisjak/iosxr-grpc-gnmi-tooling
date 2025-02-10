@@ -49,7 +49,7 @@ def config_delete(path, gnmi_target):
       pp.pprint(result)
 
 if __name__ == '__main__':
-  # config_update(update_payload=json_payload, gnmi_target=gnmi_target)
+  config_update(update_payload=json_payload, gnmi_target=gnmi_target)
   # get(path=gnmi_path, gnmi_target=gnmi_target)
-  get_cli(path=gnmi_path, gnmi_target=gnmi_target)
+  # get_cli(path=gnmi_path, gnmi_target=gnmi_target)
   # config_delete(path=gnmi_path, gnmi_target=gnmi_target)

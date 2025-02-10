@@ -11,22 +11,22 @@
 # '''
 
 # configure link shutdown 
-# json_payload = '''
-# {
-#   "openconfig-interfaces:interfaces": {
-#    "interface": [
-#     {
-#      "name": "GigabitEthernet0/0/0/3",
-#      "config": {
-#       "name": "GigabitEthernet0/0/0/3",
-#       "type": "iana-if-type:ethernetCsmacd",
-#       "enabled": false
-#      }
-#     }
-#    ]
-#  }
-# }
-# '''
+json_payload = '''
+{
+  "openconfig-interfaces:interfaces": {
+   "interface": [
+    {
+     "name": "Loopback200",
+     "config": {
+      "name": "Loopback200",
+      "type": "iana-if-type:softwareLoopback",
+      "enabled": false
+     }
+    }
+   ]
+ }
+}
+'''
 
 # configure Null0 static route
 # json_payload = '''
@@ -191,11 +191,12 @@
   # "/Cisco-IOS-XR-pfi-im-cmd-oper:interfaces/interface-xr/interface[interface-name=HundredGigE0/0/0/24]/loopback-configuration"
 # ]
 
-# prefix = "cisco_native://"
-# gnmi_path = [
-# #   "/Cisco-IOS-XR-ipv4-bgp-oper:/bgp/instances/instance/instance-active"
-#   "/Cisco-IOS-XR-ipv4-bgp-oc-oper:oc-bgp/bgp-rib"
-# ]
+prefix = "cisco_native://"
+gnmi_path = [
+  # "/Cisco-IOS-XR-ipv4-bgp-oper:/bgp/instances/instance/instance-active"
+  # "/Cisco-IOS-XR-ipv4-bgp-oc-oper:oc-bgp/bgp-rib"
+  "/Cisco-IOS-XR-ipv4-bgp-oc-oper:oc-bgp/bgp-rib/afi-safi-table"
+]
 
 # get affinity of a link in isis database
 # prefix = "openconfig://"
@@ -207,20 +208,25 @@
 # ]
 
 # Get InQ/OutQ from "show bgp all all sum"
+# Get # of prefixes sent to neighbor
 # prefix = "openconfig://"
 # gnmi_path = [
 #   # "/openconfig-network-instance:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/queues"
 #   # "/openconfig-network-instance:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/queues/input"
 #   # "/openconfig-network-instance:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/queues/output"
-#   "/openconfig-network-instance:network-instances/network-instance[name=DEFAULT]/protocols/protocol[identifier=BGP][name=default]/bgp/neighbors/neighbor[neighbor-address=10.0.0.77]/state/queues/output"
+#   # "/openconfig-network-instance:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/peer-group",
+#   # "/openconfig-network-instance:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/neighbor-address"
+#   # "/openconfig-network-instance:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor[neighbor-address=11.0.0.88]/state/queues",
+#   # "/openconfig-network-instance:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor[neighbor-address=11.0.0.88]/afi-safis/afi-safi/state/prefixes/sent",
+#   # "/openconfig-network-instance:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor[neighbor-address=2000:1:0:a3::]/state/session-state"
 # ]
 
-prefix = "cli://"
-gnmi_path = [
-  # "show version"
-  # "show bgp sum"
-  # "show bgp ipv4 flowspec Dest:20.20.1.0/24,DPort:=443/72"
-  "show bgp ipv4 flowspec dest-prefix 20.20.1.0/24"
-]
+# prefix = "cli://"
+# gnmi_path = [
+#   # "show version"
+#   # "show bgp sum"
+#   # "show bgp ipv4 flowspec Dest:20.20.1.0/24,DPort:=443/72"
+#   "show bgp ipv4 flowspec dest-prefix 20.20.1.0/24"
+# ]
 
 # gnmic get --path 'cli:/show bgp ipv4 flowspec dest-prefix 20.20.1.0/24' --skip-verify --username cisco --password cisco --port 57344 -a 10.52.158.238  -e ascii --timeout 180s
