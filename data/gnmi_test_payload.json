@@ -1,0 +1,32 @@
+[
+  [
+    "cisco_native:",
+    {
+      "Cisco-IOS-XR-um-lpts-pifib-cfg:lpts": {
+        "pifib": {
+          "hardware": {
+            "police": {
+              "flow": {
+                "bgp": {
+                  "known": {
+                    "rate": 10000
+                  },
+                  "configured": {
+                    "rate": 10000
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Cisco-IOS-XR-um-bfd-sbfd-cfg:bfd": {
+        "dampening": {
+          "disable": {
+
+          }
+        }
+      }
+    }
+  ]
+]

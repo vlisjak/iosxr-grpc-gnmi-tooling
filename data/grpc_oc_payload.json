@@ -1,0 +1,18 @@
+{
+    "openconfig-system:system/openconfig-system-grpc:grpc-servers": {
+        "grpc-server": [
+            {
+                "name": "DEFAULT",
+                "config": {
+                    "name": "DEFAULT",
+                    "listen-addresses": [
+                        "10.255.0.2"
+                    ],
+                    "port": 57401,
+                    "transport-security": false,
+                    "enable": true
+                }
+            }
+        ]
+    }
+}

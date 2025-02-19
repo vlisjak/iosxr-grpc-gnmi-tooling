@@ -11,24 +11,27 @@
 # '''
 
 # configure link shutdown 
-json_payload = '''
-{
-  "openconfig-interfaces:interfaces": {
-   "interface": [
-    {
-     "name": "Loopback200",
-     "config": {
-      "name": "Loopback200",
-      "type": "iana-if-type:softwareLoopback",
-      "enabled": false
-     }
-    }
-   ]
- }
-}
-'''
+# prefix = "openconfig://"
+# json_payload = '''
+# {
+#   "openconfig-interfaces:interfaces": {
+#    "interface": [
+#     {
+#      "name": "Loopback200",
+#      "config": {
+#       "name": "Loopback200",
+#       "type": "iana-if-type:softwareLoopback",
+#       "enabled": false
+#      }
+#     }
+#    ]
+#  }
+# }
+# '''
+
 
 # configure Null0 static route
+# prefix = "openconfig://"
 # json_payload = '''
 # {
 #   "openconfig-network-instance:network-instances": {
@@ -73,6 +76,48 @@ json_payload = '''
 #   }
 #  }
 # '''
+
+prefix = "cisco_native://"
+json_payload = '''
+{
+  "Cisco-IOS-XR-um-router-static-cfg:router": {
+              "static": {
+              "address-family": {
+                  "ipv4": {
+                  "unicast": {
+                      "prefixes": {
+                      "prefix": [
+                          {
+                            "prefix-address": "5.5.5.5",
+                            "prefix-length": 32,
+                            "nexthop-interfaces": {
+                            "nexthop-interface": [
+                              {
+                              "interface-name": "Null0"
+                              }
+                            ]
+                            }
+                          },
+                          {
+                          "prefix-address": "10.0.0.0",
+                          "prefix-length": 8,
+                          "nexthop-addresses": {
+                              "nexthop-address": [
+                              {
+                                  "address": "10.105.209.129"
+                              }
+                              ]
+                          }
+                          }
+                      ]
+                      }
+                  }
+                  }
+              }
+              }
+          }
+}
+'''
 
 # apply SR-TE affinity to core link -> this is wrong because it conifgures mpls rsvp-te affinity!
 # json_payload = '''
@@ -161,9 +206,41 @@ json_payload = '''
 # }
 # '''
 
+# prefix = "cisco_native://"
+# prefix = "openconfig://"
+# json_payload = '''
+# {
+#     "openconfig-system:system/openconfig-system-grpc:grpc-servers": {
+#         "grpc-server": [
+#             {
+#                 "name": "DEFAULT",
+#                 "config": {
+#                     "name": "DEFAULT",
+#                     "listen-addresses": [
+#                         "10.255.0.2"
+#                     ],
+#                     "port": 57401,
+#                     "transport-security": false,
+#                     "enable": true
+#                 }
+#             }
+#         ]
+#     },
+#     "Cisco-IOS-XR-um-grpc-cfg:grpc": {
+#         "dscp": "af12",
+#         "address-family": {
+#           "ipv4": {
+          
+#           }
+#         }
+#     }
+# }
+# '''
+
+
 # prefix = "openconfig://"
 # gnmi_path = [
-#   "openconfig-network-instance:network-instances/network-instance[name=DEFAULT]/protocols/protocol[identifier=STATIC][name=DEFAULT]/static-routes/static[prefix=5.5.5.5/32]"
+#   "openconfig-network-instance:network-instances/network-instance[name=DEFAULT]/protocols/protocol[identifier=STATIC][name=DEFAULT]/static-routes"
 # ]
 
 # default if not specified: 'openconfig' 
@@ -191,12 +268,12 @@ json_payload = '''
   # "/Cisco-IOS-XR-pfi-im-cmd-oper:interfaces/interface-xr/interface[interface-name=HundredGigE0/0/0/24]/loopback-configuration"
 # ]
 
-prefix = "cisco_native://"
-gnmi_path = [
-  # "/Cisco-IOS-XR-ipv4-bgp-oper:/bgp/instances/instance/instance-active"
-  # "/Cisco-IOS-XR-ipv4-bgp-oc-oper:oc-bgp/bgp-rib"
-  "/Cisco-IOS-XR-ipv4-bgp-oc-oper:oc-bgp/bgp-rib/afi-safi-table"
-]
+# prefix = "cisco_native://"
+# gnmi_path = [
+#   # "/Cisco-IOS-XR-ipv4-bgp-oper:/bgp/instances/instance/instance-active"
+#   # "/Cisco-IOS-XR-ipv4-bgp-oc-oper:oc-bgp/bgp-rib"
+#   "/Cisco-IOS-XR-ipv4-bgp-oc-oper:oc-bgp/bgp-rib/afi-safi-table"
+# ]
 
 # get affinity of a link in isis database
 # prefix = "openconfig://"
