@@ -71,8 +71,10 @@ def get(prefix, path, gnmi_target):
 
 def get_full_config(gnmi_target):
   with gNMIclient(**gnmi_target) as gc:
-      # note: this returns also openconfig
+      # note: this returns also openconfig, but only if the config was pushed as OC!
       result = gc.get(prefix='cisco_native:', path=['cisco_native:'], encoding='json_ietf', datatype='CONFIG')
+      # note: we shall see openconfig only when device was also configured via OC !
+      # result = gc.get(prefix='openconfig:', path=[], encoding='json_ietf', datatype='CONFIG')
       pp.pprint(result)
 
 def get_cli(prefix, path, gnmi_target):
@@ -88,11 +90,10 @@ def config_delete(path, gnmi_target):
 
 if __name__ == '__main__':
   # config_replace_file(json_file_payload='data/gnmi_test_payload.json', gnmi_target=gnmi_target)
-  # config_replace_file(json_file_payload='data/bt_static_route_replace_test.json', gnmi_target=gnmi_target)
   # config_update(prefix=prefix, update_payload=json_payload, gnmi_target=gnmi_target)
   # config_replace(update_payload=json_payload, gnmi_target=gnmi_target)
   # get(prefix=prefix, path=gnmi_path, gnmi_target=gnmi_target)
   # get(prefix="", path="", gnmi_target=gnmi_target)
-  get_full_config(gnmi_target=gnmi_target)
-  # get_cli(prefix=prefix, path=gnmi_path, gnmi_target=gnmi_target)
+  # get_full_config(gnmi_target=gnmi_target)
+  get_cli(prefix=prefix, path=gnmi_path, gnmi_target=gnmi_target)
   # config_delete(path=gnmi_path, gnmi_target=gnmi_target)

@@ -31,93 +31,93 @@
 
 
 # configure Null0 static route
-# prefix = "openconfig://"
-# json_payload = '''
-# {
-#   "openconfig-network-instance:network-instances": {
-#    "network-instance": [
-#     {
-#      "name": "DEFAULT",
-#      "protocols": {
-#       "protocol": [
-#        {
-#         "identifier": "openconfig-policy-types:STATIC",
-#         "name": "DEFAULT",
-#         "config": {
-#          "identifier": "openconfig-policy-types:STATIC",
-#          "name": "DEFAULT"
-#         },
-#         "static-routes": {
-#          "static": [
-#           {
-#            "prefix": "5.5.5.5/32",
-#            "config": {
-#             "prefix": "5.5.5.5/32"
-#            },
-#            "next-hops": {
-#             "next-hop": [
-#              {
-#               "index": "##DROP##",
-#               "config": {
-#                "index": "##DROP##",
-#                "next-hop": "openconfig-local-routing:DROP"
-#               }
-#              }
-#             ]
-#            }
-#           }
-#          ]
-#         }
-#        }
-#       ]
-#      }
-#     }
-#    ]
-#   }
-#  }
-# '''
-
-prefix = "cisco_native://"
+prefix = "openconfig://"
 json_payload = '''
 {
-  "Cisco-IOS-XR-um-router-static-cfg:router": {
-              "static": {
-              "address-family": {
-                  "ipv4": {
-                  "unicast": {
-                      "prefixes": {
-                      "prefix": [
-                          {
-                            "prefix-address": "5.5.5.5",
-                            "prefix-length": 32,
-                            "nexthop-interfaces": {
-                            "nexthop-interface": [
-                              {
-                              "interface-name": "Null0"
-                              }
-                            ]
-                            }
-                          },
-                          {
-                          "prefix-address": "10.0.0.0",
-                          "prefix-length": 8,
-                          "nexthop-addresses": {
-                              "nexthop-address": [
-                              {
-                                  "address": "10.105.209.129"
-                              }
-                              ]
-                          }
-                          }
-                      ]
-                      }
-                  }
-                  }
+  "openconfig-network-instance:network-instances": {
+   "network-instance": [
+    {
+     "name": "DEFAULT",
+     "protocols": {
+      "protocol": [
+       {
+        "identifier": "openconfig-policy-types:STATIC",
+        "name": "DEFAULT",
+        "config": {
+         "identifier": "openconfig-policy-types:STATIC",
+         "name": "DEFAULT"
+        },
+        "static-routes": {
+         "static": [
+          {
+           "prefix": "5.5.5.5/32",
+           "config": {
+            "prefix": "5.5.5.5/32"
+           },
+           "next-hops": {
+            "next-hop": [
+             {
+              "index": "##DROP##",
+              "config": {
+               "index": "##DROP##",
+               "next-hop": "openconfig-local-routing:DROP"
               }
-              }
+             }
+            ]
+           }
           }
-}
+         ]
+        }
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
 '''
+
+# prefix = "cisco_native://"
+# json_payload = '''
+# {
+#   "Cisco-IOS-XR-um-router-static-cfg:router": {
+#               "static": {
+#               "address-family": {
+#                   "ipv4": {
+#                   "unicast": {
+#                       "prefixes": {
+#                       "prefix": [
+#                           {
+#                             "prefix-address": "5.5.5.5",
+#                             "prefix-length": 32,
+#                             "nexthop-interfaces": {
+#                             "nexthop-interface": [
+#                               {
+#                               "interface-name": "Null0"
+#                               }
+#                             ]
+#                             }
+#                           },
+#                           {
+#                           "prefix-address": "10.0.0.0",
+#                           "prefix-length": 8,
+#                           "nexthop-addresses": {
+#                               "nexthop-address": [
+#                               {
+#                                   "address": "10.105.209.129"
+#                               }
+#                               ]
+#                           }
+#                           }
+#                       ]
+#                       }
+#                   }
+#                   }
+#               }
+#               }
+#           }
+# }
+# '''
 
 # apply SR-TE affinity to core link -> this is wrong because it conifgures mpls rsvp-te affinity!
 # json_payload = '''
@@ -299,11 +299,13 @@ json_payload = '''
 # ]
 
 # prefix = "cli://"
-# gnmi_path = [
-#   # "show version"
-#   # "show bgp sum"
-#   # "show bgp ipv4 flowspec Dest:20.20.1.0/24,DPort:=443/72"
-#   "show bgp ipv4 flowspec dest-prefix 20.20.1.0/24"
-# ]
+# We can try following path to fetch a route:
+# - Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance[instance-name='default']/instance-active/default-vrf/afs/af[af-name='ipv4-unicast']/networks/network[rd='0:0:0'][network='21.21.21.0'][prefix-length='24']
+gnmi_path = [
+  # "show version"
+  # "show bgp sum"
+  # "show bgp ipv4 flowspec Dest:20.20.1.0/24,DPort:=443/72"
+  "show bgp ipv4 unicast 1.0.0.0/24"
+]
 
 # gnmic get --path 'cli:/show bgp ipv4 flowspec dest-prefix 20.20.1.0/24' --skip-verify --username cisco --password cisco --port 57344 -a 10.52.158.238  -e ascii --timeout 180s
