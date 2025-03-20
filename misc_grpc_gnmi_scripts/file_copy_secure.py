@@ -1,4 +1,5 @@
 import grpc
+
 # from ems import ems_grpc_pb2, ems_grpc_pb2_grpc
 import ems.ems_grpc_pb2 as pb2
 import ems.ems_grpc_pb2_grpc as pb2_grpc
@@ -8,9 +9,10 @@ from grpc import metadata_call_credentials
 from urllib.parse import quote_plus
 import base64
 
-# source: 
+# source:
 # - https://github.com/MeganSun19/grpc_file_copy/blob/main/copyfile.py
 # - also look at: https://github.com/MeganSun19/gnoi_file
+
 
 # Create basic authentication header for HTTPS access (for source filesystem)
 def create_https_basic_auth_header(username, password):
@@ -21,13 +23,15 @@ def create_https_basic_auth_header(username, password):
     encoded_credentials = base64.b64encode(credentials.encode("utf-8")).decode("utf-8")
     return f"Basic {encoded_credentials}"
 
+
 # Load server credentials (CA certificate)
 def load_ca_cert(cert_path):
     """
     Load the CA certificate for the SSL connection.
     """
-    with open(cert_path, 'rb') as f:
+    with open(cert_path, "rb") as f:
         return f.read()
+
 
 # Initialize the GRPC channel with SSL and authentication for the gRPC device access
 def create_grpc_secure_channel(target, grpc_username, grpc_password, ca_cert_path):
@@ -38,9 +42,7 @@ def create_grpc_secure_channel(target, grpc_username, grpc_password, ca_cert_pat
     ca_cert = load_ca_cert(ca_cert_path)
 
     # Create basic authentication for gRPC access (device username/password)
-    auth_creds = grpc.metadata_call_credentials(
-        lambda context, callback: callback([("username", grpc_username), ("password", grpc_password)], None)
-    )
+    auth_creds = grpc.metadata_call_credentials(lambda context, callback: callback([("username", grpc_username), ("password", grpc_password)], None))
 
     # Create secure channel credentials with the CA cert
     channel_creds = ssl_channel_credentials(root_certificates=ca_cert)
@@ -49,10 +51,11 @@ def create_grpc_secure_channel(target, grpc_username, grpc_password, ca_cert_pat
     composite_creds = grpc.composite_channel_credentials(channel_creds, auth_creds)
 
     # Establish a secure channel with the target and composite credentials
-    options = (('grpc.ssl_target_name_override', 'PE1-NCS57C3'),)      #device hostname
+    options = (("grpc.ssl_target_name_override", "PE1-NCS57C3"),)  # device hostname
     channel = grpc.secure_channel(target, composite_creds, options)
-    
+
     return channel
+
 
 # Main function to initiate GRPC call
 def main():
@@ -60,7 +63,7 @@ def main():
     grpc_target = "{ip}:57344"
     grpc_username = "{grpc_username}"
     grpc_password = "{grpc_password}"
-    
+
     # HTTPS Server credentials (for source filesystem)
     https_username = "{https_username}"
     https_password = "{https_password}"
@@ -80,14 +83,13 @@ def main():
     https_auth_header = create_https_basic_auth_header(https_username, https_password)
     sourcename = f"//{quote_plus(https_username)}:{quote_plus(https_password)}@{https_server}:/{https_file}"
 
-
     # Copy from https server to router:
     grpc_payload = {
         "Cisco-IOS-XR-shellutil-copy-act:copy": {
             "sourcename": sourcename,
             "destinationname": "/ncs5500-infra-1.0.0.1-r2421.CSCwk73569.x86_64.rpm",
             "sourcefilesystem": "https:",
-            "destinationfilesystem": "harddisk:"
+            "destinationfilesystem": "harddisk:",
         }
     }
     # Copy from Active RP to Standby RP:
@@ -109,12 +111,8 @@ def main():
     # Create the GRPC message with the payload
     message = pb2.ActionJSONArgs(ReqId=0, yangpathjson=json.dumps(grpc_payload))
 
-
     # Prepare metadata for gRPC request (device authentication)
-    grpc_metadata = [
-        ("username", grpc_username),
-        ("password", grpc_password)
-    ]
+    grpc_metadata = [("username", grpc_username), ("password", grpc_password)]
 
     try:
         # Send gRPC request
@@ -129,7 +127,7 @@ def main():
             print(result[0])
 
             # If yangjson is present, attempt to parse it
-            if hasattr(result[0], 'yangjson'):
+            if hasattr(result[0], "yangjson"):
                 try:
                     result_json = json.loads(result[0].yangjson)
                     print("File copy response:")
@@ -145,5 +143,7 @@ def main():
     except grpc.RpcError as e:
         print(f"Error occurred during gRPC call: {e.details()}")
         print(f"Status Code: {e.code()}")
+
+
 if __name__ == "__main__":
     main()

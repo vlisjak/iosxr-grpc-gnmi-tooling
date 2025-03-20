@@ -2,7 +2,8 @@ import grpc
 import iosxr_pb2 as pb2
 import iosxr_pb2_grpc as pb2_grpc
 import json
-#from cisco_gnmi.auth import CiscoAuthPlugin
+
+# from cisco_gnmi.auth import CiscoAuthPlugin
 
 # Install:
 # python -m pip install grpcio
@@ -15,26 +16,27 @@ import json
 # Run:
 # python -m grpc_tools.protoc --proto_path=. ./iosxr.proto --python_out=. --grpc_python_out=.
 
+
 def secure_grpc_call_with_ca(target, grpc_payload, metadata, ca_cert_path):
     # Load the CA certificate from the file
-    with open(ca_cert_path, 'rb') as cert_file:
+    with open(ca_cert_path, "rb") as cert_file:
         trusted_certs = cert_file.read()
-        print('CA Certificate is opened...')
-    
+        print("CA Certificate is opened...")
+
     # Create SSL credentials using the CA certificate
     credentials = grpc.ssl_channel_credentials(root_certificates=trusted_certs)
     channel_options = (
-    ("grpc.ssl_target_name_override", targetIP),  # Override the server name for target
-    ("grpc.enable_http_proxy", 0),
+        ("grpc.ssl_target_name_override", targetIP),  # Override the server name for target
+        ("grpc.enable_http_proxy", 0),
     )
 
     with grpc.secure_channel(target, credentials, options=channel_options) as channel:
         stub = pb2_grpc.gRPCExecStub(channel)
-        print('TLS Secure Channel Initiated..')
+        print("TLS Secure Channel Initiated..")
 
         message = pb2.ActionJSONArgs(ReqId=0, yangpathjson=json.dumps(grpc_payload))
-        
-        print('GRPC Payload to send to router:')
+
+        print("GRPC Payload to send to router:")
         print(grpc_payload)
 
         result = []
@@ -44,20 +46,17 @@ def secure_grpc_call_with_ca(target, grpc_payload, metadata, ca_cert_path):
 
     return result
 
+
 if __name__ == "__main__":
     targetIP = "hostname.cisco.com"  # Replace with your actual target
     targetPort = "57344"
-    target = (targetIP + ':' + targetPort)
+    target = targetIP + ":" + targetPort
     username = "cisco"
     password = "cisco"
     session_name = "FILESPAN"
     ca_cert_path = "data/CA.cer"  # Path to the CA certificate file
 
-    grpc_payload = {
-        'Cisco-IOS-XR-Ethernet-SPAN-act:packet-collection-start': { 
-            'session': session_name 
-            } 
-        }
+    grpc_payload = {"Cisco-IOS-XR-Ethernet-SPAN-act:packet-collection-start": {"session": session_name}}
 
     metadata = (
         ("username", username),

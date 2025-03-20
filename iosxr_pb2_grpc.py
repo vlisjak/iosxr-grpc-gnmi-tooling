@@ -12,9 +12,7 @@ _version_not_supported = False
 try:
     from grpc._utilities import first_version_is_lower
 
-    _version_not_supported = first_version_is_lower(
-        GRPC_VERSION, GRPC_GENERATED_VERSION
-    )
+    _version_not_supported = first_version_is_lower(GRPC_VERSION, GRPC_GENERATED_VERSION)
 except ImportError:
     _version_not_supported = True
 
@@ -250,13 +248,9 @@ def add_gRPCConfigOperServicer_to_server(servicer, server):
             response_serializer=iosxr__pb2.GetProtoFileReply.SerializeToString,
         ),
     }
-    generic_handler = grpc.method_handlers_generic_handler(
-        "IOSXRExtensibleManagabilityService.gRPCConfigOper", rpc_method_handlers
-    )
+    generic_handler = grpc.method_handlers_generic_handler("IOSXRExtensibleManagabilityService.gRPCConfigOper", rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers(
-        "IOSXRExtensibleManagabilityService.gRPCConfigOper", rpc_method_handlers
-    )
+    server.add_registered_method_handlers("IOSXRExtensibleManagabilityService.gRPCConfigOper", rpc_method_handlers)
 
 
 # This class is part of an EXPERIMENTAL API.
@@ -693,13 +687,9 @@ def add_gRPCExecServicer_to_server(servicer, server):
             response_serializer=iosxr__pb2.ActionJSONReply.SerializeToString,
         ),
     }
-    generic_handler = grpc.method_handlers_generic_handler(
-        "IOSXRExtensibleManagabilityService.gRPCExec", rpc_method_handlers
-    )
+    generic_handler = grpc.method_handlers_generic_handler("IOSXRExtensibleManagabilityService.gRPCExec", rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers(
-        "IOSXRExtensibleManagabilityService.gRPCExec", rpc_method_handlers
-    )
+    server.add_registered_method_handlers("IOSXRExtensibleManagabilityService.gRPCExec", rpc_method_handlers)
 
 
 # This class is part of an EXPERIMENTAL API.
@@ -868,13 +858,9 @@ def add_OpenConfiggRPCServicer_to_server(servicer, server):
             response_serializer=iosxr__pb2.GetModelsOutput.SerializeToString,
         ),
     }
-    generic_handler = grpc.method_handlers_generic_handler(
-        "IOSXRExtensibleManagabilityService.OpenConfiggRPC", rpc_method_handlers
-    )
+    generic_handler = grpc.method_handlers_generic_handler("IOSXRExtensibleManagabilityService.OpenConfiggRPC", rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers(
-        "IOSXRExtensibleManagabilityService.OpenConfiggRPC", rpc_method_handlers
-    )
+    server.add_registered_method_handlers("IOSXRExtensibleManagabilityService.OpenConfiggRPC", rpc_method_handlers)
 
 
 # This class is part of an EXPERIMENTAL API.

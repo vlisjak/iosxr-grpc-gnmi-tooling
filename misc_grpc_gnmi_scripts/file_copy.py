@@ -36,7 +36,7 @@ if __name__ == "__main__":
             "sourcefilesystem": "http://10.255.0.1:8888/",
             "destinationname": "test.txt",
             "destinationfilesystem": "harddisk:/",
-            "vrf": "clab-mgmt"
+            "vrf": "clab-mgmt",
         }
     }
 

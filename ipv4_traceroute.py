@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import grpc
 import iosxr_pb2 as pb2
 import iosxr_pb2_grpc as pb2_grpc
@@ -15,20 +17,14 @@ import json
 
 if __name__ == "__main__":
 
-    target = "10.52.157.183:57344"
+    target = "192.168.101.41:57400"
     username = "cisco"
-    password = "cisco123"
+    password = "Cisco!123"
 
-    lsp_name = "srte_c_10_ep_1.1.1.8"
-    lsp_endpoint = "10.0.0.8"
-    lsp_source = "1.1.1.10"
+    destination = "10.255.1.43"
+    source = "10.255.1.41"
 
-    grpc_payload = {
-        "Cisco-IOS-XR-mpls-traceroute-act:mpls-traceroute": {
-            "sr-mpls": {"policy": {"name": lsp_name, "lsp-endpoint": lsp_endpoint}},
-            "request-options-parameters": {"source": lsp_source},
-        }
-    }
+    grpc_payload = {"Cisco-IOS-XR-traceroute-act:traceroute": {"ipv4": {"source": source, "destination": destination, "numeric": True}}}
 
     metadata = (
         ("username", username),
@@ -44,10 +40,6 @@ if __name__ == "__main__":
         for m in stub.ActionJSON(message, metadata=metadata):
             result.append(m)
 
-        try:
-            result_json = json.loads(result[0].yangjson)
-            for hop in result_json["Cisco-IOS-XR-mpls-traceroute-act:output"]["mpls-traceroute-response"]["paths"]["path"][0]["hops"]["hop"]:
-                print(hop["hop-index"], hop["hop-origin-ip"])
-        except:
-            result_json = json.loads(result[0].errors)
-            print(result_json)
+        result_json = json.loads(result[0].yangjson)
+        for hop in result_json["Cisco-IOS-XR-traceroute-act:output"]["traceroute-response"]["ipv4"]["hops"]["hop"]:
+            print(hop["hop-index"], hop["hop-address"])

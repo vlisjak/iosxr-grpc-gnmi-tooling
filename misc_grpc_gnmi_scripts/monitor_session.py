@@ -8,13 +8,9 @@ if __name__ == "__main__":
     target = "192.168.101.43:57400"
     username = "cisco"
     password = "cisco"
-    session_name = 'FILESPAN'
+    session_name = "FILESPAN"
 
-    grpc_payload = {
-        'Cisco-IOS-XR-Ethernet-SPAN-act:packet-collection-start': { 
-            'session': session_name 
-            } 
-        }
+    grpc_payload = {"Cisco-IOS-XR-Ethernet-SPAN-act:packet-collection-start": {"session": session_name}}
 
     metadata = (
         ("username", username),
@@ -25,11 +21,11 @@ if __name__ == "__main__":
         stub = pb2_grpc.gRPCExecStub(channel)
 
         message = pb2.ActionJSONArgs(ReqId=0, yangpathjson=json.dumps(grpc_payload))
-        
-        print('GRPC Payload to send to router:')
+
+        print("GRPC Payload to send to router:")
         print(grpc_payload)
 
         result = []
         for m in stub.ActionJSON(message, metadata=metadata):
             result.append(m)
-            print(message,metadata)
+            print(message, metadata)

@@ -1,4 +1,3 @@
-
 # configure MSID
 # json_payload = '''
 # {
@@ -10,7 +9,7 @@
 # }
 # '''
 
-# configure link shutdown 
+# configure link shutdown
 # prefix = "openconfig://"
 # json_payload = '''
 # {
@@ -31,51 +30,51 @@
 
 
 # configure Null0 static route
-prefix = "openconfig://"
-json_payload = '''
-{
-  "openconfig-network-instance:network-instances": {
-   "network-instance": [
-    {
-     "name": "DEFAULT",
-     "protocols": {
-      "protocol": [
-       {
-        "identifier": "openconfig-policy-types:STATIC",
-        "name": "DEFAULT",
-        "config": {
-         "identifier": "openconfig-policy-types:STATIC",
-         "name": "DEFAULT"
-        },
-        "static-routes": {
-         "static": [
-          {
-           "prefix": "5.5.5.5/32",
-           "config": {
-            "prefix": "5.5.5.5/32"
-           },
-           "next-hops": {
-            "next-hop": [
-             {
-              "index": "##DROP##",
-              "config": {
-               "index": "##DROP##",
-               "next-hop": "openconfig-local-routing:DROP"
-              }
-             }
-            ]
-           }
-          }
-         ]
-        }
-       }
-      ]
-     }
-    }
-   ]
-  }
- }
-'''
+# prefix = "openconfig://"
+# json_payload = '''
+# {
+#   "openconfig-network-instance:network-instances": {
+#    "network-instance": [
+#     {
+#      "name": "DEFAULT",
+#      "protocols": {
+#       "protocol": [
+#        {
+#         "identifier": "openconfig-policy-types:STATIC",
+#         "name": "DEFAULT",
+#         "config": {
+#          "identifier": "openconfig-policy-types:STATIC",
+#          "name": "DEFAULT"
+#         },
+#         "static-routes": {
+#          "static": [
+#           {
+#            "prefix": "5.5.5.5/32",
+#            "config": {
+#             "prefix": "5.5.5.5/32"
+#            },
+#            "next-hops": {
+#             "next-hop": [
+#              {
+#               "index": "##DROP##",
+#               "config": {
+#                "index": "##DROP##",
+#                "next-hop": "openconfig-local-routing:DROP"
+#               }
+#              }
+#             ]
+#            }
+#           }
+#          ]
+#         }
+#        }
+#       ]
+#      }
+#     }
+#    ]
+#   }
+#  }
+# '''
 
 # prefix = "cisco_native://"
 # json_payload = '''
@@ -230,7 +229,7 @@ json_payload = '''
 #         "dscp": "af12",
 #         "address-family": {
 #           "ipv4": {
-          
+
 #           }
 #         }
 #     }
@@ -243,7 +242,7 @@ json_payload = '''
 #   "openconfig-network-instance:network-instances/network-instance[name=DEFAULT]/protocols/protocol[identifier=STATIC][name=DEFAULT]/static-routes"
 # ]
 
-# default if not specified: 'openconfig' 
+# default if not specified: 'openconfig'
 # # -> Error: gNMI: invalid YangGetGnmi: rpc error: code = Internal desc = prefix and path origins do not match
 
 # prefix = "cisco_native://"
@@ -257,16 +256,16 @@ json_payload = '''
 #   "/Cisco-IOS-XR-segment-routing-ms-cfg:sr/Cisco-IOS-XR-infra-xtc-agent-cfg:traffic-engineering/srte-interfaces/srte-interface[srte-interface-name=GigabitEthernet0/0/0/5]"
 # ]
 
-# prefix = "openconfig://"
+prefix = "openconfig://"
 # prefix = "cisco_native://"
-# gnmi_path = [
-  # "/openconfig-interfaces:interfaces/interface[name=HundredGigE0/0/0/24]/state/loopback-mode"
-  # "/Cisco-IOS-XR-ifmgr-oper:interface-properties/data-nodes/data-node/locationviews/locationview/interfaces/interface[interface-name=HundredGigE0/0/0/7]"
-  # "/Cisco-IOS-XR-ifmgr-oper:interface-properties"
-  # "/openconfig-interfaces:interfaces/interface[name=HundredGigE0/0/0/24]"
-  # "/openconfig-interfaces:interfaces/interface[name=HundredGigE0/0/0/24]/subinterfaces/subinterface[index=0]/openconfig-if-ip:ipv4/addresses/address"
-  # "/Cisco-IOS-XR-pfi-im-cmd-oper:interfaces/interface-xr/interface[interface-name=HundredGigE0/0/0/24]/loopback-configuration"
-# ]
+gnmi_path = [
+    # "/openconfig-interfaces:interfaces/interface[name=HundredGigE0/0/0/24]/state/loopback-mode"
+    # "/Cisco-IOS-XR-ifmgr-oper:interface-properties/data-nodes/data-node/locationviews/locationview/interfaces/interface[interface-name=HundredGigE0/0/0/7]"
+    # "/Cisco-IOS-XR-ifmgr-oper:interface-properties"
+    # "/openconfig-interfaces:interfaces/interface[name=HundredGigE0/0/0/24]"
+    # "/openconfig-interfaces:interfaces/interface[name=HundredGigE0/0/0/24]/subinterfaces/subinterface[index=0]/openconfig-if-ip:ipv4/addresses/address"
+    # "/Cisco-IOS-XR-pfi-im-cmd-oper:interfaces/interface-xr/interface[interface-name=HundredGigE0/0/0/24]/loopback-configuration"
+]
 
 # prefix = "cisco_native://"
 # gnmi_path = [
@@ -301,11 +300,11 @@ json_payload = '''
 # prefix = "cli://"
 # We can try following path to fetch a route:
 # - Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance[instance-name='default']/instance-active/default-vrf/afs/af[af-name='ipv4-unicast']/networks/network[rd='0:0:0'][network='21.21.21.0'][prefix-length='24']
-gnmi_path = [
-  # "show version"
-  # "show bgp sum"
-  # "show bgp ipv4 flowspec Dest:20.20.1.0/24,DPort:=443/72"
-  "show bgp ipv4 unicast 1.0.0.0/24"
-]
+# gnmi_path = [
+# "show version"
+# "show bgp sum"
+# "show bgp ipv4 flowspec Dest:20.20.1.0/24,DPort:=443/72"
+#   "show bgp ipv4 unicast 1.0.0.0/24"
+# ]
 
 # gnmic get --path 'cli:/show bgp ipv4 flowspec dest-prefix 20.20.1.0/24' --skip-verify --username cisco --password cisco --port 57344 -a 10.52.158.238  -e ascii --timeout 180s
